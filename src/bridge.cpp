@@ -773,7 +773,7 @@ void bridge::checkblockproof( heavyproof blockproof ) {
   auto                sched_itr = _schedulestable.find(
       blockproof.blocktoprove.block.header.schedule_version );
 
-  // QUESTION: how to add a new block with a higher shedule?
+  // QUESTION: how to add a new block with a higher schedule?
   check( sched_itr != _schedulestable.end(), "schedule not supported" );
 
   // CODE-REVIEW: == 0 is not easy to read, use a enum
@@ -789,12 +789,8 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
   bool schedule_hash_updated = false;
 
-  // WORKING: left at this point
-
   // if current block_num is greater than the schedule's last block, get next schedule hash
   if ( block_num > sched_itr->last_block && !schedule_hash_updated ) {
-
-    // print("Current block is : ", block_num);
     // print("Schedule no longer in force. Checking for new pending schedule hash...\n");
 
     if ( new_schedule_format )
@@ -1151,15 +1147,14 @@ void bridge::_checkproofc( lightproof blockproof, actionproof actionproof ) {
 
   checkactionproof( blockproof.chain_id, blockproof.header, actionproof );
 
-  //attempt to remove up to 2 proofs
+  // attempt to remove up to 2 proofs
   gc_proofs( chain_itr->name, 2 );
-  //attempt to remove up to 2 schedules
+  // attempt to remove up to 2 schedules
   gc_schedules( chain_itr->name, 2 );
 }
 
-//Verify a block without verifying an action using the heavy proof scheme. Used when calling the contract from an inline action
+// Verify a block without verifying an action using the heavy proof scheme. Used when calling the contract from an inline action
 ACTION bridge::checkproofa( name contract ) {
-
   heavyproof blockproof = get_heavy_proof( contract );
 
   // _checkproofa calls:
@@ -1169,7 +1164,7 @@ ACTION bridge::checkproofa( name contract ) {
   _checkproofa( blockproof );
 }
 
-//Verify a block and an action using the heavy proof scheme. Used when calling the contract from an inline action
+// Verify a block and an action using the heavy proof scheme. Used when calling the contract from an inline action
 ACTION bridge::checkproofb( name contract, actionproof actionproof ) {
 
   heavyproof blockproof = get_heavy_proof( contract );
@@ -1177,7 +1172,7 @@ ACTION bridge::checkproofb( name contract, actionproof actionproof ) {
   _checkproofb( blockproof, actionproof );
 }
 
-//Verify an action using the light proof scheme. Used when calling the contract from an inline action
+// Verify an action using the light proof scheme. Used when calling the contract from an inline action
 ACTION bridge::checkproofc( name contract, actionproof actionproof ) {
 
   lightproof blockproof = get_light_proof( contract );
@@ -1185,25 +1180,25 @@ ACTION bridge::checkproofc( name contract, actionproof actionproof ) {
   _checkproofc( blockproof, actionproof );
 }
 
-//Verify a block without verifying an action using the heavy proof scheme. Used when calling the contract directly
+// Verify a block without verifying an action using the heavy proof scheme. Used when calling the contract directly
 ACTION bridge::checkproofd( heavyproof blockproof ) {
 
   _checkproofa( blockproof );
 }
 
-//Verify a block and an action using the heavy proof scheme. Used when calling the contract directly
+// Verify a block and an action using the heavy proof scheme. Used when calling the contract directly
 ACTION bridge::checkproofe( heavyproof blockproof, actionproof actionproof ) {
 
   _checkproofb( blockproof, actionproof );
 }
 
-//Verify an action using the light proof scheme. Used when calling the contract directly
+// Verify an action using the light proof scheme. Used when calling the contract directly
 ACTION bridge::checkprooff( lightproof blockproof, actionproof actionproof ) {
 
   _checkproofc( blockproof, actionproof );
 }
 
-//Disable contract
+// Disable contract
 ACTION bridge::disable( name chain_name ) {
 
   require_auth( _self );
