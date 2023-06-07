@@ -16,12 +16,12 @@ checksum256 make_canonical_right( const checksum256 &val ) {
   return canonical_r;
 }
 
-//Creates a canonically correct pair of nodes, with proper 1st bit masking
+// Creates a canonically correct pair of nodes, with proper 1st bit masking
 auto make_canonical_pair( const checksum256 &l, const checksum256 &r ) {
   return std::make_pair( make_canonical_left( l ), make_canonical_right( r ) );
 };
 
-//Compute the next power of 2 for a given number
+// Compute the next power of 2 for a given number
 constexpr uint64_t next_power_of_2( uint64_t value ) {
   value -= 1;
   value |= value >> 1;
@@ -34,12 +34,12 @@ constexpr uint64_t next_power_of_2( uint64_t value ) {
   return value;
 }
 
-//Compute the number of layers required to create a merkle tree for a given number of leaves
+// Compute the number of layers required to create a merkle tree for a given number of leaves
 constexpr uint64_t clz_power_of_2( uint64_t v ) {
   return 64 - ( __builtin_clzll( v ) + 1 );
 }
 
-//Compute the maximum number of layers of a merkle tree for a given number of leaves
+// Compute the maximum number of layers of a merkle tree for a given number of leaves
 constexpr uint64_t calculate_max_depth( uint64_t node_count ) {
   if ( node_count == 0 ) {
     return 0;
@@ -48,14 +48,14 @@ constexpr uint64_t calculate_max_depth( uint64_t node_count ) {
   return clz_power_of_2( implied_count ) + 1;
 }
 
-//Moves nodes from one container to another
+// Moves nodes from one container to another
 template < typename ContainerA, typename ContainerB >
 inline void move_nodes( ContainerA &to, const ContainerB &from ) {
   to.clear();
   to.insert( to.begin(), from.begin(), from.end() );
 }
 
-//Moves nodes from one container to another
+// Moves nodes from one container to another
 template < typename Container >
 inline void move_nodes( Container &to, Container &&from ) {
   to = std::forward< Container >( from );
@@ -76,14 +76,14 @@ checksum256 hash_pair( std::pair< checksum256, checksum256 > p ) {
   return sha256( (char *)ptr, 64 );
 }
 
-//Append a new leaf to an incremental merkle tree data structure, returning the resulting merkle root
+// Append a new leaf to an incremental merkle tree data structure, returning the resulting merkle root
 const checksum256 &append( const checksum256          &digest,
                            std::vector< checksum256 > &_active_nodes,
                            uint64_t                    node_count ) {
   bool     partial = false;
   uint64_t max_depth = calculate_max_depth( node_count + 1 );
 
-  //auto implied_count = next_power_of_2(node_count);
+  // auto implied_count = next_power_of_2(node_count);
 
   auto                       current_depth = max_depth - 1;
   auto                       index = node_count;
@@ -94,7 +94,6 @@ const checksum256 &append( const checksum256          &digest,
 
   while ( current_depth > 0 ) {
     if ( !( index & 0x1 ) ) {
-
       if ( !partial ) {
         updated_active_nodes.emplace_back( top );
       }
@@ -103,7 +102,6 @@ const checksum256 &append( const checksum256          &digest,
 
       partial = true;
     } else {
-
       const auto &left_value = *active_iter;
       ++active_iter;
 
@@ -119,9 +117,7 @@ const checksum256 &append( const checksum256          &digest,
   }
 
   updated_active_nodes.emplace_back( top );
-
   move_nodes( _active_nodes, std::move( updated_active_nodes ) );
-
   node_count++;
 
   return _active_nodes.back();
@@ -247,37 +243,33 @@ void check_signatures( name              producer,
 
   assert_recover_key( digest_to_sign, producer_signature, key );
 
-  //check(auth_satisfied(auth, signing_keys), "invalid block signature(s)");
+  // check(auth_satisfied(auth, signing_keys), "invalid block signature(s)");
 }
 
-//verify the integrity and authentiticy of a block header, compute and return its predecessor's merkle root using new schedule format
+// verify the integrity and authentiticy of a block header, compute and return its predecessor's merkle root using new schedule format
 checksum256 check_block_header( bridge::sblockheader        block,
                                 std::vector< checksum256 > &active_nodes,
                                 uint64_t                    node_count,
                                 bridge::schedulev2         &producer_schedule,
                                 checksum256 &producer_schedule_hash ) {
-
-  //schedule version of the header must match either current or pending schedule version
+  // schedule version of the header must match either current or pending schedule version
   check( block.header.schedule_version == producer_schedule.version ||
              block.header.schedule_version == producer_schedule.version - 1,
          "invalid schedule version" );
 
   checksum256 header_digest = block.header.digest();
-
   checksum256 previous_bmroot = append(
       block.header.previous,
       active_nodes,
-      node_count ); //we must calculate previous_bmroot ourselves, otherwise we can't trust the activeNodes
+      node_count ); // we must calculate previous_bmroot ourselves, otherwise we can't trust the activeNodes
   checksum256 current_bmroot = append(
       block.header.block_id(),
       active_nodes,
-      node_count ); //we can now safely calculate the current_bmroot, which we will store
+      node_count ); // we can now safely calculate the current_bmroot, which we will store
 
   // if block contains a new schedule (old format), we use that schedule hash from now on when preparing the digest to sign to verify signatures
   if ( block.header.new_producers.has_value() ) {
-
     auto new_producer_schedule = *block.header.new_producers;
-
     std::vector< char > serializedSchedule = pack( new_producer_schedule );
     producer_schedule_hash =
         sha256( serializedSchedule.data(), serializedSchedule.size() );
@@ -295,7 +287,7 @@ checksum256 check_block_header( bridge::sblockheader        block,
     }
   }
 
-  //check signatures
+  // check signatures
   check_signatures( block.header.producer,
                     block.producer_signatures,
                     header_digest,
@@ -306,34 +298,31 @@ checksum256 check_block_header( bridge::sblockheader        block,
   return previous_bmroot;
 }
 
-//verify the integrity and authentiticy of a block header, compute and return its predecessor's merkle root using old schedule format
+// verify the integrity and authentiticy of a block header, compute and return its predecessor's merkle root using old schedule format
 checksum256 check_block_header( bridge::sblockheader        block,
                                 std::vector< checksum256 > &active_nodes,
                                 uint64_t                    node_count,
                                 producer_schedule          &producer_schedule,
                                 checksum256 &producer_schedule_hash ) {
 
-  //schedule version of the header must match either current or pending schedule version
+  // schedule version of the header must match either current or pending schedule version
   check( block.header.schedule_version == producer_schedule.version ||
              block.header.schedule_version == producer_schedule.version - 1,
          "invalid schedule version" );
 
   checksum256 header_digest = block.header.digest();
-
   checksum256 previous_bmroot = append(
       block.header.previous,
       active_nodes,
-      node_count ); //we must calculate previous_bmroot ourselves, otherwise we can't trust the activeNodes
+      node_count ); // we must calculate previous_bmroot ourselves, otherwise we can't trust the activeNodes
   checksum256 current_bmroot = append(
       block.header.block_id(),
       active_nodes,
-      node_count ); //we can now safely calculate the current_bmroot, which we will store
+      node_count ); // we can now safely calculate the current_bmroot, which we will store
 
   // if block contains a new schedule (old format), we use that schedule hash from now on when preparing the digest to sign to verify signatures
   if ( block.header.new_producers.has_value() ) {
-
     auto new_producer_schedule = *block.header.new_producers;
-
     std::vector< char > serializedSchedule = pack( new_producer_schedule );
     producer_schedule_hash =
         sha256( serializedSchedule.data(), serializedSchedule.size() );
@@ -351,7 +340,7 @@ checksum256 check_block_header( bridge::sblockheader        block,
     }
   }
 
-  //check signatures
+  // check signatures
   check_signatures( block.header.producer,
                     block.producer_signatures[0],
                     header_digest,
@@ -490,10 +479,10 @@ void bridge::gc_schedules( name chain, int count ) {
     counter++;
   } while ( counter < count );
 
-  //if (gc_counter>0) print("collected ", gc_counter," garbage items (old schedules)\n");
+  // if (gc_counter>0) print("collected ", gc_counter," garbage items (old schedules)\n");
 }
 
-//save a successfully proven block's merkle root to contract's RAM
+// save a successfully proven block's merkle root to contract's RAM
 void bridge::add_proven_root( name        chain,
                               uint32_t    block_num,
                               checksum256 root ) {
@@ -524,13 +513,13 @@ void bridge::add_proven_root( name        chain,
     } );
   }
 
-  //print("emplaced new proof-> height : ", block_num, ", root : ", root, "\n");
+  // print("emplaced new proof-> height : ", block_num, ", root : ", root, "\n");
 }
 
-//verify if the root exists in the contract's RAM for that chain
+// verify if the root exists in the contract's RAM for that chain
 void bridge::check_proven_root( name chain, checksum256 root ) {
 
-  //print("looking for root ", root, "\n");
+  // print("looking for root ", root, "\n");
 
   proofstable _proofstable( _self, chain.value );
 
@@ -544,10 +533,10 @@ void bridge::check_proven_root( name chain, checksum256 root ) {
   check( itr != merkle_index.end(),
          "unknown merkle root. must prove root first" );
 
-  //print("found root ", root, "\n");
+  // print("found root ", root, "\n");
 }
 
-//returns the chain name
+// returns the chain name
 name bridge::get_chain_name( checksum256 chain_id ) {
 
   auto cid_index = _chainstable.get_index< "chainid"_n >();
@@ -558,30 +547,23 @@ name bridge::get_chain_name( checksum256 chain_id ) {
   return chain_itr->name;
 }
 
-//converts indexes list to hashes
+// converts indexes list to hashes
 std::vector< checksum256 > map_hashes( std::vector< checksum256 > dictionary,
                                        std::vector< uint16_t >    index ) {
   std::vector< checksum256 > result;
-
   auto itr = index.begin();
 
   while ( itr != index.end() ) {
-
     uint16_t    i = *itr;
     checksum256 h = dictionary.at( i );
-
-    //print("i ", i, "\n");
-    //print("h ", h, "\n");
-
     result.push_back( h );
-
     itr++;
   }
 
   return result;
 }
 
-//gets the hash of the next schedule, throws an exception if the next schedule hasn't been proven yet
+// gets the hash of the next schedule, throws an exception if the next schedule hasn't been proven yet
 checksum256 bridge::get_next_schedule_hash( name     chain_name,
                                             uint32_t schedule_version ) {
 
@@ -786,7 +768,6 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
   uint32_t block_num = blockproof.blocktoprove.block.header.block_num();
   uint32_t previous_block_num = block_num;
-
   bool schedule_hash_updated = false;
 
   // if current block_num is greater than the schedule's last block, get next schedule hash
@@ -813,10 +794,8 @@ void bridge::checkblockproof( heavyproof blockproof ) {
   // Prove block authenticity
   // must be active nodes prior to appending previous block's id
   uint64_t node_count = blockproof.blocktoprove.node_count;
-
   std::vector< checksum256 > hashes = blockproof.hashes;
   std::vector< uint16_t >    an = blockproof.blocktoprove.active_nodes;
-
   std::vector< checksum256 > active = map_hashes( hashes, an );
 
   checksum256 bm_root;
