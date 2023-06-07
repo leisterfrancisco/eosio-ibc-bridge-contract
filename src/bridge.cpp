@@ -61,9 +61,8 @@ inline void move_nodes( Container &to, Container &&from ) {
   to = std::forward< Container >( from );
 }
 
-//Concatenate and hash a pair of values and return the resulting digest
+// Concatenate and hash a pair of values and return the resulting digest
 checksum256 hash_pair( std::pair< checksum256, checksum256 > p ) {
-
   std::array< uint8_t, 32 > arr1 = p.first.extract_as_byte_array();
   std::array< uint8_t, 32 > arr2 = p.second.extract_as_byte_array();
 
@@ -123,7 +122,7 @@ const checksum256 &append( const checksum256          &digest,
   return _active_nodes.back();
 }
 
-//Given a proof and a specific leaf, verify its inclusion in a merkle tree with the given root
+// Given a proof and a specific leaf, verify its inclusion in a merkle tree with the given root
 bool proof_of_inclusion( std::vector< checksum256 > proof_nodes,
                          checksum256                target,
                          checksum256                root ) {
@@ -159,7 +158,7 @@ bool proof_of_inclusion( std::vector< checksum256 > proof_nodes,
   return hash == root;
 }
 
-//Find the producer's authority from the schedule
+// Find the producer's authority from the schedule
 block_signing_authority_v0 get_producer_authority( bridge::schedulev2 schedule,
                                                    name producer ) {
   for ( int i = 0; i < schedule.producers.size(); i++ ) {
@@ -167,17 +166,18 @@ block_signing_authority_v0 get_producer_authority( bridge::schedulev2 schedule,
       return std::get< 0 >( schedule.producers[i].authority );
     }
   }
+  
   check( false, "producer not in current schedule" );
 }
 
-//Verify if a vector contains a given element
+// Verify if a vector contains a given element
 template < typename T > bool contains( std::vector< T > vec, const T &elem ) {
   return any_of( vec.begin(), vec.end(), [&]( const auto &x ) {
     return x == elem;
   } );
 }
 
-//Verify if the authorization of a given block producer has been satisfied (compatible with weight msig)
+// Verify if the authorization of a given block producer has been satisfied (compatible with weight msig)
 bool auth_satisfied( const block_signing_authority_v0 authority,
                      std::vector< public_key >        signing_keys ) {
   uint32_t weight = 0;
@@ -188,11 +188,11 @@ bool auth_satisfied( const block_signing_authority_v0 authority,
         return true;
     }
   }
-  //print("insufficient WTMsig weight : ", weight, " (threshold : ", authority.threshold, ")\n");
+  // print("insufficient WTMsig weight : ", weight, " (threshold : ", authority.threshold, ")\n");
   return false;
 }
 
-//prepare the digest to sign from its base components, recover the key(s) from the signature(s) and verify if we enough signatures matching keys to satisfy authorization requirements
+// prepare the digest to sign from its base components, recover the key(s) from the signature(s) and verify if we enough signatures matching keys to satisfy authorization requirements
 void check_signatures( name                     producer,
                        std::vector< signature > producer_signatures,
                        checksum256              header_digest,
