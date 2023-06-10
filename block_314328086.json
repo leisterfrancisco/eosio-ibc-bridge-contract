@@ -1,0 +1,236 @@
+{
+  "timestamp": "2023-06-09T22:12:32.000",
+  "producer": "newdex.bp",
+  "confirmed": 0,
+  "previous": "12bc4415f852e92b99921499666442b1b076b09a00c023f87cd193d5c53b6ff6",
+  "transaction_mroot": "ca3c1d4f48ec7ec841411e9e3d0e41cb6561ad9761d67b2eceed3c9f20e3cd21",
+  "action_mroot": "f8d20fe5fa116645d1201b67a9c1036c3798772a749f8892b9b8b3695312c837",
+  "schedule_version": 2077,
+  "new_producers": null,
+  "producer_signature": "SIG_K1_KVzbWQdDWPBNmE7AB58ohJmduP6DABQCZMLgi6htz24NSphSpgnJpUnUFgn9fzgTG44kcEE4ifyTNsSqgkxzBjRPBeRuw7",
+  "transactions": [{
+      "status": "executed",
+      "cpu_usage_us": 516,
+      "net_usage_words": 14,
+      "trx": {
+        "id": "d51e6e0124b9757d9e0331d8ffab15aeac184b90413fb9b01cb41c6e4cdb353a",
+        "signatures": [
+          "SIG_K1_K81JEfhoGzrLJxAt3xQCf2HG9eLvB2W9yhNGrBdXVH74vjjU1VQ2rUJBrB4EpRkRF6LUysrC2J5WLLcHRNTAHyadX7MZrL"
+        ],
+        "compression": "none",
+        "packed_context_free_data": "",
+        "context_free_data": [],
+        "packed_trx": "eca38364fd43a25bed560000000001000000a063d0b0ae0000000000a0a6930190a304eab9abbebb00000000a8ed32321090a304eab9abbebbd02600000000000000",
+        "transaction": {
+          "expiration": "2023-06-09T22:13:00",
+          "ref_block_num": 17405,
+          "ref_block_prefix": 1458396066,
+          "max_net_usage_words": 0,
+          "max_cpu_usage_ms": 0,
+          "delay_sec": 0,
+          "context_free_actions": [],
+          "actions": [{
+              "account": "push.sx",
+              "name": "mine",
+              "authorization": [{
+                  "actor": "rizerije.mlt",
+                  "permission": "active"
+                }
+              ],
+              "data": {
+                "executor": "rizerije.mlt",
+                "nonce": 9936
+              },
+              "hex_data": "90a304eab9abbebbd026000000000000"
+            }
+          ]
+        }
+      }
+    },{
+      "status": "executed",
+      "cpu_usage_us": 464,
+      "net_usage_words": 33,
+      "trx": {
+        "id": "76fc9e0f8910cdf589af853d6a60dac5342beb88bdac9dda9003f4fc9af6308a",
+        "signatures": [
+          "SIG_K1_K5pvorjh2r2n7SjTxTuuTCj1aeyyHDDYsA8dYmuDAYhar3tNBfTnUsLYLSZSCNswkn8i4XkDes4LrAExuRKAiQ8FVeUpVV",
+          "SIG_K1_K1adRCnr6eQdzxBSRwoAqZ7tx17LVzweQWtQ6iHZziHAFfvYzx3j85JFKfc2rZW44BLYPmLo1A9A9ucDAivLbjkLUyRZrE",
+          "SIG_K1_Kc4eKuXRkRe1Ykm9z9WnqD1VvUxzysexNiETvuhYq3TvefnRRb3FRdEHRa5tffNpX17UyPmZ8JtBounuGkJDko1NQMXSwX"
+        ],
+        "compression": "none",
+        "packed_context_free_data": "",
+        "context_free_data": [],
+        "packed_trx": "acb18364ae430f923cd00000000003a0649a2656ed4dac0000d0155dbabca901a0649a2656ed4dac0000d0155dbabca9080045bb33ed20537390113253419a7bd5000000572d3ccdcd010045bb33ed20537300000000a46962d5210045bb33ed205373a0649a2656ed4daca00f000000000000025550580000000000a0649a2656ed4dac000000000000029901a0649a2656ed4dac000000c067175dd6200045bb33ed20537316a4429eb1500000a00f000000000000025550580000000000",
+        "transaction": {
+          "expiration": "2023-06-09T23:11:40",
+          "ref_block_num": 17326,
+          "ref_block_prefix": 3493630479,
+          "max_net_usage_words": 0,
+          "max_cpu_usage_ms": 0,
+          "delay_sec": 0,
+          "context_free_actions": [],
+          "actions": [{
+              "account": "playuplandme",
+              "name": "payforcpu",
+              "authorization": [{
+                  "actor": "playuplandme",
+                  "permission": "payforcpu"
+                }
+              ],
+              "data": {
+                "user_name": "ihdm1vdnrh2k"
+              },
+              "hex_data": "0045bb33ed205373"
+            },{
+              "account": "upxtokenacct",
+              "name": "transfer",
+              "authorization": [{
+                  "actor": "ihdm1vdnrh2k",
+                  "permission": "upland"
+                }
+              ],
+              "data": {
+                "from": "ihdm1vdnrh2k",
+                "to": "playuplandme",
+                "quantity": "40.00 UPX",
+                "memo": ""
+              },
+              "hex_data": "0045bb33ed205373a0649a2656ed4daca00f000000000000025550580000000000"
+            },{
+              "account": "playuplandme",
+              "name": "n41",
+              "authorization": [{
+                  "actor": "playuplandme",
+                  "permission": "utility"
+                }
+              ],
+              "data": {
+                "p51": "ihdm1vdnrh2k",
+                "a45": "88723794600982",
+                "p54": "40.00 UPX"
+              },
+              "hex_data": "0045bb33ed20537316a4429eb1500000a00f0000000000000255505800000000"
+            }
+          ]
+        }
+      }
+    },{
+      "status": "executed",
+      "cpu_usage_us": 377,
+      "net_usage_words": 22,
+      "trx": {
+        "id": "715ebe51891218646e933920b51573e9d789f0684493b02169226089cf088fad",
+        "signatures": [
+          "SIG_K1_K9B8CZmJhPaZU3TEPU7oLDQCEXJXphDKDPuig8EpSbDdhgo8RBVtZHVMapMxbmAMz9AUiYi1Kfy8CV9t14uswHBGTVnqE5",
+          "SIG_K1_K8J4oGtyKX5khbJXN9qkBXgNxug92hSA3gugo1gz8mrNsgjHfRfBXgqfFhJEr3XSKGjHSft7rLVb1WzkpSVeD1CvKFUhhz"
+        ],
+        "compression": "none",
+        "packed_context_free_data": "",
+        "context_free_data": [],
+        "packed_trx": "06a483640a44ea77ddf10000000002a0649a2656ed4dac0000d0155dbabca901a0649a2656ed4dac0000d0155dbabca9085082917ee6367aa7a0649a2656ed4dac0000000000008898015082917ee6367aa700000000a46962d5195082917ee6367aa7028356473afe250000f98e2837f24a000000",
+        "transaction": {
+          "expiration": "2023-06-09T22:13:26",
+          "ref_block_num": 17418,
+          "ref_block_prefix": 4057823210,
+          "max_net_usage_words": 0,
+          "max_cpu_usage_ms": 0,
+          "delay_sec": 0,
+          "context_free_actions": [],
+          "actions": [{
+              "account": "playuplandme",
+              "name": "payforcpu",
+              "authorization": [{
+                  "actor": "playuplandme",
+                  "permission": "payforcpu"
+                }
+              ],
+              "data": {
+                "user_name": "oxx3htnyma15"
+              },
+              "hex_data": "5082917ee6367aa7"
+            },{
+              "account": "playuplandme",
+              "name": "n24",
+              "authorization": [{
+                  "actor": "oxx3htnyma15",
+                  "permission": "upland"
+                }
+              ],
+              "data": {
+                "p51": "oxx3htnyma15",
+                "p55": [
+                  "41773829674627",
+                  "82404167945977"
+                ]
+              },
+              "hex_data": "5082917ee6367aa7028356473afe250000f98e2837f24a0000"
+            }
+          ]
+        }
+      }
+    },{
+      "status": "executed",
+      "cpu_usage_us": 251,
+      "net_usage_words": 28,
+      "trx": {
+        "id": "df40fe5ef44791d1a07fadc7a07a8516dfb25a59557f8d1db2f90532cad20ed3",
+        "signatures": [
+          "SIG_K1_K3vS7cJUZuSrDCAfE8qoxhLx9b2xfCoM5CkCg6wKPkih3wSoQxTXxFDiiSbA3fx5RNn4s1UgoLCR3SSN98iX6B1Dqfxoo2",
+          "SIG_K1_K2YtuXY45vnFQXBBsx75TU3ihMN5TxgrQTuG5hsezejgFGMbYk6WLqJq2D4qfBAVj1v5S9XeVkocCAHGmyYZvMECCM9Sxs"
+        ],
+        "compression": "none",
+        "packed_context_free_data": "",
+        "context_free_data": [],
+        "packed_trx": "06a483640a44ea77ddf10000000002a0649a2656ed4dac0000d0155dbabca901a0649a2656ed4dac0000d0155dbabca908506793530eefe887a0649a2656ed4dac000000000000c29801506793530eefe88700000000a46962d549506793530eefe8870855892876fc4a0000df76287ff84a0000218d286afa4a000025982a196e47000076892d94014a000049c8194151480000db9a2d7ef7490000c7511b4dcc47000000",
+        "transaction": {
+          "expiration": "2023-06-09T22:13:26",
+          "ref_block_num": 17418,
+          "ref_block_prefix": 4057823210,
+          "max_net_usage_words": 0,
+          "max_cpu_usage_ms": 0,
+          "delay_sec": 0,
+          "context_free_actions": [],
+          "actions": [{
+              "account": "playuplandme",
+              "name": "payforcpu",
+              "authorization": [{
+                  "actor": "playuplandme",
+                  "permission": "payforcpu"
+                }
+              ],
+              "data": {
+                "user_name": "kzoiy3mnmhnp"
+              },
+              "hex_data": "506793530eefe887"
+            },{
+              "account": "playuplandme",
+              "name": "n31",
+              "authorization": [{
+                  "actor": "kzoiy3mnmhnp",
+                  "permission": "upland"
+                }
+              ],
+              "data": {
+                "a54": "kzoiy3mnmhnp",
+                "p55": [
+                  "82448174582101",
+                  "82431145703135",
+                  "82439383321889",
+                  "78538194196517",
+                  "81370641434998",
+                  "79513821759561",
+                  "81327322667739",
+                  "78942792536519"
+                ]
+              },
+              "hex_data": "506793530eefe8870855892876fc4a0000df76287ff84a0000218d286afa4a000025982a196e47000076892d94014a000049c8194151480000db9a2d7ef7490000c7511b4dcc470000"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "id": "12bc4416e0ec655d3a933bf605f3b13adb92ff5e3cb6217254092c710f1300d9",
+  "block_num": 314328086,
+  "ref_block_prefix": 4131099450
+}

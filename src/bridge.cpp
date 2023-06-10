@@ -1,6 +1,6 @@
 #include <bridge.hpp>
 
-//Set 1st bit to 0 a node is a left side node for merkle concatenation + hash
+// Set 1st bit to 0 a node is a left side node for merkle concatenation + hash
 checksum256 make_canonical_left( const checksum256 &val ) {
   std::array< uint8_t, 32 > arr = val.extract_as_byte_array();
   arr[0] &= 0x7F;
@@ -8,7 +8,7 @@ checksum256 make_canonical_left( const checksum256 &val ) {
   return canonical_l;
 }
 
-//Set 1st bit to 1 a node is a right side node for merkle concatenation + hash
+// Set 1st bit to 1 a node is a right side node for merkle concatenation + hash
 checksum256 make_canonical_right( const checksum256 &val ) {
   std::array< uint8_t, 32 > arr = val.extract_as_byte_array();
   arr[0] |= 0x80;
@@ -126,29 +126,21 @@ const checksum256 &append( const checksum256          &digest,
 bool proof_of_inclusion( std::vector< checksum256 > proof_nodes,
                          checksum256                target,
                          checksum256                root ) {
-
   checksum256 hash = target;
-
   auto p_itr = proof_nodes.begin();
 
   while ( p_itr != proof_nodes.end() ) {
-
     checksum256 &node = *p_itr;
-
     std::array< uint8_t, 32 > arr = node.extract_as_byte_array();
-
     bool isLeft = arr[0] < 128;
 
     if ( !isLeft ) {
       node = make_canonical_right( node );
       hash = make_canonical_left( hash );
-
       hash = hash_pair( std::make_pair( hash, node ) );
-
     } else {
       hash = make_canonical_right( hash );
       node = make_canonical_left( node );
-
       hash = hash_pair( std::make_pair( node, hash ) );
     }
 
@@ -738,7 +730,7 @@ void bridge::checkactionproof( checksum256 chain_id,
                                blockheader.action_mroot ),
            "invalid action merkle proof path" );
 
-  //print("action inclusion ", actionDigest, " successfully proved", "\n");
+  // print("action inclusion ", actionDigest, " successfully proved", "\n");
 }
 
 // verify validity of an heavy block proof
@@ -869,7 +861,6 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
     // if current block_num is greater than the schedule's last block, get next schedule hash
     if ( block_num > sched_itr->last_block && !schedule_hash_updated ) {
-      // print("Current block is : ", block_num);
       // print("Schedule no longer in force. Checking for new pending schedule hash...\n");
 
       if ( new_schedule_format )
@@ -918,7 +909,7 @@ void bridge::checkblockproof( heavyproof blockproof ) {
     // print("BFT proof ", i," (block ", block_num, ") successfully proven \n");
 
     if ( round1_bft_producers.size() == threshold_for_finality ) {
-      //accumulating for second round
+      // accumulating for second round
 
       if ( round2_bft_producers.size() == 0 )
         check( *round1_bft_producers.rbegin() !=
@@ -979,9 +970,7 @@ void bridge::checkblockproof( heavyproof blockproof ) {
     sched_itr = _schedulestable.find( new_producer_schedule.version );
 
     if ( sched_itr == _schedulestable.end() ) {
-
       time_point cts = current_time_point();
-
       uint64_t expiry = cts.sec_since_epoch() + SCHEDULE_CACHING_DURATION;
 
       _schedulestable.emplace( get_self(), [&]( auto &c ) {
@@ -1024,9 +1013,7 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
         // add it to schedules table if not already present
         if ( sched_itr == _schedulestable.end() ) {
-
           time_point cts = current_time_point();
-
           uint64_t expiry = cts.sec_since_epoch() + SCHEDULE_CACHING_DURATION;
 
           _schedulestable.emplace( get_self(), [&]( auto &c ) {
