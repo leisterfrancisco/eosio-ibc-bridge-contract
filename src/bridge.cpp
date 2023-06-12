@@ -478,19 +478,13 @@ void bridge::gc_schedules( name chain, int count ) {
 void bridge::add_proven_root( name        chain,
                               uint32_t    block_num,
                               checksum256 root ) {
-
   time_point cts = current_time_point();
-
   uint64_t expiry = cts.sec_since_epoch() + PROOF_CACHING_DURATION;
-
   proofstable _proofstable( _self, chain.value );
-
   auto merkle_index = _proofstable.get_index< "merkleroot"_n >();
-
   auto itr = merkle_index.find( root );
 
   if ( itr == merkle_index.end() ) {
-
     _proofstable.emplace( get_self(), [&]( auto &p ) {
       p.id = _proofstable.available_primary_key();
       p.block_height = block_num;
@@ -499,7 +493,6 @@ void bridge::add_proven_root( name        chain,
     } );
 
   } else {
-
     merkle_index.modify( itr, get_self(), [&]( auto &p ) {
       p.expiry = time_point( seconds( expiry ) );
     } );
@@ -576,7 +569,7 @@ checksum256 bridge::get_next_schedule_hash( name     chain_name,
   return sched_itr->hash;
 }
 
-//initialize bridge for a given with a v1 producer schedule
+// initialize bridge for a given with a v1 producer schedule
 ACTION bridge::inita( name              chain_name,
                       checksum256       chain_id,
                       uint32_t          return_value_activated,
@@ -618,7 +611,7 @@ ACTION bridge::inita( name              chain_name,
   } );
 }
 
-//initialize bridge for a given with a v2 producer schedule
+// initialize bridge for a given with a v2 producer schedule
 ACTION bridge::initb( name               chain_name,
                       checksum256        chain_id,
                       uint32_t           return_value_activated,
@@ -646,7 +639,7 @@ ACTION bridge::initb( name               chain_name,
   time_point cts = current_time_point();
 
   uint64_t expiry = cts.sec_since_epoch() +
-                    SCHEDULE_CACHING_DURATION; //One day-minimum caching
+                    SCHEDULE_CACHING_DURATION; // One day-minimum caching
 
   chainschedulestable _schedulestable( _self, chain_name.value );
   _schedulestable.emplace( get_self(), [&]( auto &c ) {
@@ -660,7 +653,7 @@ ACTION bridge::initb( name               chain_name,
   } );
 }
 
-//verify validity of an action proof
+// verify validity of an action proof
 void bridge::checkactionproof( checksum256 chain_id,
                                blockheader blockheader,
                                actionproof actionproof ) {
@@ -752,12 +745,9 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
   // CODE-REVIEW: == 0 is not easy to read, use a enum
   bool new_schedule_format = sched_itr->producer_schedule_v1.version == 0;
-
   producer_schedule  producer_schedule_v1 = sched_itr->producer_schedule_v1;
   bridge::schedulev2 producer_schedule_v2 = sched_itr->producer_schedule_v2;
-
   checksum256 producer_schedule_hash = sched_itr->hash;
-
   uint32_t block_num = blockproof.blocktoprove.block.header.block_num();
   uint32_t previous_block_num = block_num;
   bool schedule_hash_updated = false;
@@ -1132,7 +1122,6 @@ ACTION bridge::checkproofa( name contract ) {
 
 // Verify a block and an action using the heavy proof scheme. Used when calling the contract from an inline action
 ACTION bridge::checkproofb( name contract, actionproof actionproof ) {
-
   heavyproof blockproof = get_heavy_proof( contract );
 
   _checkproofb( blockproof, actionproof );
@@ -1140,7 +1129,6 @@ ACTION bridge::checkproofb( name contract, actionproof actionproof ) {
 
 // Verify an action using the light proof scheme. Used when calling the contract from an inline action
 ACTION bridge::checkproofc( name contract, actionproof actionproof ) {
-
   lightproof blockproof = get_light_proof( contract );
 
   _checkproofc( blockproof, actionproof );
@@ -1148,25 +1136,21 @@ ACTION bridge::checkproofc( name contract, actionproof actionproof ) {
 
 // Verify a block without verifying an action using the heavy proof scheme. Used when calling the contract directly
 ACTION bridge::checkproofd( heavyproof blockproof ) {
-
   _checkproofa( blockproof );
 }
 
 // Verify a block and an action using the heavy proof scheme. Used when calling the contract directly
 ACTION bridge::checkproofe( heavyproof blockproof, actionproof actionproof ) {
-
   _checkproofb( blockproof, actionproof );
 }
 
 // Verify an action using the light proof scheme. Used when calling the contract directly
 ACTION bridge::checkprooff( lightproof blockproof, actionproof actionproof ) {
-
   _checkproofc( blockproof, actionproof );
 }
 
 // Disable contract
 ACTION bridge::disable( name chain_name ) {
-
   require_auth( _self );
 
   auto chain_itr = _chainstable.find( chain_name.value );

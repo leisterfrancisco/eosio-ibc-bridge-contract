@@ -292,11 +292,11 @@ public:
       name              chain_name,
       checksum256       chain_id,
       uint32_t          return_value_activated,
-      producer_schedule initial_schedule ); //old schedule version (WAX, TELOS)
+      producer_schedule initial_schedule ); // old schedule version (WAX, TELOS)
   ACTION initb( name        chain_name,
                 checksum256 chain_id,
                 uint32_t    return_value_activated,
-                schedulev2  initial_schedule ); //new schedule version (EOS, UX)
+                schedulev2  initial_schedule ); // new schedule version (EOS, UX)
 
   // Two different proving schemes are available (heavy / light).
 
