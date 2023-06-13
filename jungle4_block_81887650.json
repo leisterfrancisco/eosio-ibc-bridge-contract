@@ -1,0 +1,15 @@
+{
+  "timestamp": "2023-06-13T19:09:02.500",
+  "producer": "eosdacserval",
+  "confirmed": 0,
+  "previous": "04e181a15cb664056fdb993ab8ce0577a9ec8baf84ed82a0f1b17510ae463233",
+  "transaction_mroot": "0000000000000000000000000000000000000000000000000000000000000000",
+  "action_mroot": "93708bec81871ad8465e83a0c653436b23dd6a1ec0913d49e8da132742cb7426",
+  "schedule_version": 65,
+  "new_producers": null,
+  "producer_signature": "SIG_K1_K8fZ9RpwwfosAvMQx9JSbRWtKBcFpt13wE6FMadMgYTtrXSQxuscQ8JAM5Ruq51XcbjBYFeMKuoBsodBiLqPDMVMkQsAio",
+  "transactions": [],
+  "id": "04e181a2109b949a32bcb638fdd59e2ecb2f6b0903b3e6d5f7dedf029bb3e8b4",
+  "block_num": 81887650,
+  "ref_block_prefix": 951499826
+}

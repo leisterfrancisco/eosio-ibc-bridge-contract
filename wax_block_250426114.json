@@ -1,0 +1,97 @@
+{
+  "timestamp": "2023-06-13T19:07:12.000",
+  "producer": "nation.wax",
+  "confirmed": 240,
+  "previous": "0eed33014b407a74725cf184062737ffd47bb39ef7ccf519f3915ea478c6df0d",
+  "transaction_mroot": "9e15c5ac2587476cf9f9f73ea56932a38a770543819c2862dae07113ed18e719",
+  "action_mroot": "6fd79b1a105e16bc390a2d0766945c4e71d245dcb675676b74a8ed8e757a4772",
+  "schedule_version": 634,
+  "new_producers": null,
+  "producer_signature": "SIG_K1_KWdzcgctid1YWa7qaWrMjk4s1GWARvPnK58H8AoWJtczNkgWSFgH1vUq2TtjP1jvBRH8fubxbtL5emaMQ2MvZ6L9G9bQTT",
+  "transactions": [{
+      "status": "executed",
+      "cpu_usage_us": 106,
+      "net_usage_words": 15,
+      "trx": {
+        "id": "850a3a2ab1105c2b8ecd23b874d757d29a4979945aeabf4ca5f986429421d75b",
+        "signatures": [
+          "SIG_K1_KhwRSHLBA6agS5aigy1sa3nyzG7Zyv4hRf8bRhYRkmdqNLDjbyxKSoTncQG92g1tFitkva2k6Dub6Pm37AroJiZAWq7itU"
+        ],
+        "compression": "none",
+        "packed_context_free_data": "",
+        "context_free_data": [],
+        "packed_trx": "d9be88648332116034460000000001803332374f8ace350000000000a1a69301e0afc646dd5cbbe10000000000a0a69318e0afc646dd5cbbe112010f00000000003e3c0b000000000000",
+        "transaction": {
+          "expiration": "2023-06-13T19:09:13",
+          "ref_block_num": 12931,
+          "ref_block_prefix": 1177837585,
+          "max_net_usage_words": 0,
+          "max_cpu_usage_ms": 0,
+          "delay_sec": 0,
+          "context_free_actions": [],
+          "actions": [{
+              "account": "arbcontracts",
+              "name": "mine2",
+              "authorization": [{
+                  "actor": "waxptreasury",
+                  "permission": "mine"
+                }
+              ],
+              "data": {
+                "miner": "waxptreasury",
+                "nonce": 983314,
+                "entry": 736318
+              },
+              "hex_data": "e0afc646dd5cbbe112010f00000000003e3c0b0000000000"
+            }
+          ]
+        }
+      }
+    },{
+      "status": "executed",
+      "cpu_usage_us": 269,
+      "net_usage_words": 18,
+      "trx": {
+        "id": "5d562e1a9426c94d76d5df6afa2b56adcbc68c7df3308153c7ffeb87c2797ba6",
+        "signatures": [
+          "SIG_K1_KV1qNRJj4Ge151aobvK5PMJJHHESgJPiQNn9qRz1BYpAfkm4r1JJzdxacrpZg5UKv1mJBtRtJEzqhUQm1CL8a3zN54LbQ2",
+          "SIG_K1_K3rp5p2K1XWpCqAY4Vg6uTbD359kzfM3WiAF7gwFygCgnpHWmzKj4ax5WbnR26svtTrSh1zBRKGHiDkLLwvoAtdGkwPNdd"
+        ],
+        "compression": "none",
+        "packed_context_free_data": "",
+        "context_free_data": [],
+        "packed_trx": "4bbf88647f329e0f8d18000000000190e2a51c5f25af590000000000e94c44021042605335364dfb00000000a8ed323210c4605335364dfb00000000a8ed32321010c4605335364dfbd3f6f20d0001000000",
+        "transaction": {
+          "expiration": "2023-06-13T19:11:07",
+          "ref_block_num": 12927,
+          "ref_block_prefix": 411897758,
+          "max_net_usage_words": 0,
+          "max_cpu_usage_ms": 0,
+          "delay_sec": 0,
+          "context_free_actions": [],
+          "actions": [{
+              "account": "farmersworld",
+              "name": "claim",
+              "authorization": [{
+                  "actor": "zhangheng111",
+                  "permission": "active"
+                },{
+                  "actor": "zhangheng321",
+                  "permission": "active"
+                }
+              ],
+              "data": {
+                "owner": "zhangheng321",
+                "asset_id": "1099745654483"
+              },
+              "hex_data": "10c4605335364dfbd3f6f20d00010000"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "id": "0eed3302138549453a139dd5cd7e3faba2f9ead2eeb29b925fa86da5c3763f7c",
+  "block_num": 250426114,
+  "ref_block_prefix": 3583841082
+}

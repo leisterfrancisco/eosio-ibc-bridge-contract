@@ -127,12 +127,12 @@ bool proof_of_inclusion( std::vector< checksum256 > proof_nodes,
                          checksum256                target,
                          checksum256                root ) {
   checksum256 hash = target;
-  auto p_itr = proof_nodes.begin();
+  auto        p_itr = proof_nodes.begin();
 
   while ( p_itr != proof_nodes.end() ) {
-    checksum256 &node = *p_itr;
+    checksum256              &node = *p_itr;
     std::array< uint8_t, 32 > arr = node.extract_as_byte_array();
-    bool isLeft = arr[0] < 128;
+    bool                      isLeft = arr[0] < 128;
 
     if ( !isLeft ) {
       node = make_canonical_right( node );
@@ -158,7 +158,7 @@ block_signing_authority_v0 get_producer_authority( bridge::schedulev2 schedule,
       return std::get< 0 >( schedule.producers[i].authority );
     }
   }
-  
+
   check( false, "producer not in current schedule" );
 }
 
@@ -199,7 +199,7 @@ void check_signatures( name                     producer,
   block_signing_authority_v0 auth =
       get_producer_authority( producer_schedule, producer );
   std::vector< public_key > signing_keys;
-  
+
   for ( const auto &sig : producer_signatures ) {
     signing_keys.push_back( recover_key( digest_to_sign, sig ) );
   }
@@ -260,7 +260,7 @@ checksum256 check_block_header( bridge::sblockheader        block,
 
   // if block contains a new schedule (old format), we use that schedule hash from now on when preparing the digest to sign to verify signatures
   if ( block.header.new_producers.has_value() ) {
-    auto new_producer_schedule = *block.header.new_producers;
+    auto                new_producer_schedule = *block.header.new_producers;
     std::vector< char > serializedSchedule = pack( new_producer_schedule );
     producer_schedule_hash =
         sha256( serializedSchedule.data(), serializedSchedule.size() );
@@ -313,7 +313,7 @@ checksum256 check_block_header( bridge::sblockheader        block,
 
   // if block contains a new schedule (old format), we use that schedule hash from now on when preparing the digest to sign to verify signatures
   if ( block.header.new_producers.has_value() ) {
-    auto new_producer_schedule = *block.header.new_producers;
+    auto                new_producer_schedule = *block.header.new_producers;
     std::vector< char > serializedSchedule = pack( new_producer_schedule );
     producer_schedule_hash =
         sha256( serializedSchedule.data(), serializedSchedule.size() );
@@ -477,11 +477,11 @@ void bridge::gc_schedules( name chain, int count ) {
 void bridge::add_proven_root( name        chain,
                               uint32_t    block_num,
                               checksum256 root ) {
-  time_point cts = current_time_point();
-  uint64_t expiry = cts.sec_since_epoch() + PROOF_CACHING_DURATION;
+  time_point  cts = current_time_point();
+  uint64_t    expiry = cts.sec_since_epoch() + PROOF_CACHING_DURATION;
   proofstable _proofstable( _self, chain.value );
-  auto merkle_index = _proofstable.get_index< "merkleroot"_n >();
-  auto itr = merkle_index.find( root );
+  auto        merkle_index = _proofstable.get_index< "merkleroot"_n >();
+  auto        itr = merkle_index.find( root );
 
   if ( itr == merkle_index.end() ) {
     _proofstable.emplace( get_self(), [&]( auto &p ) {
@@ -534,7 +534,7 @@ name bridge::get_chain_name( checksum256 chain_id ) {
 std::vector< checksum256 > map_hashes( std::vector< checksum256 > dictionary,
                                        std::vector< uint16_t >    index ) {
   std::vector< checksum256 > result;
-  auto itr = index.begin();
+  auto                       itr = index.begin();
 
   while ( itr != index.end() ) {
     uint16_t    i = *itr;
@@ -655,9 +655,7 @@ ACTION bridge::initb( name               chain_name,
 void bridge::checkactionproof( checksum256 chain_id,
                                blockheader blockheader,
                                actionproof actionproof ) {
-
-  //Prove action
-
+  // Prove action
   auto cid_index = _chainstable.get_index< "chainid"_n >();
   auto chain_itr = cid_index.find( chain_id );
 
@@ -667,7 +665,7 @@ void bridge::checkactionproof( checksum256 chain_id,
 
   uint32_t block_num = blockheader.block_num();
 
-  //print("Proving action : ", actionproof.action.account, "::", actionproof.action.name, "\n");
+  // print("Proving action : ", actionproof.action.account, "::", actionproof.action.name, "\n");
 
   if ( actionproof.action.account == SYSTEM_CONTRACT &&
        actionproof.action.name == ACTIVATE_ACTION ) {
@@ -677,8 +675,8 @@ void bridge::checkactionproof( checksum256 chain_id,
 
     checksum256 feature = checksum256( arr );
 
-    //print("ACTION_RETURN_VALUE_DIGEST ", ACTION_RETURN_VALUE_DIGEST, "\n");
-    //print("action contains activation for protocol feature ACTION_RETURN_VALUE (block ", block_num ,")\n");
+    // print("ACTION_RETURN_VALUE_DIGEST ", ACTION_RETURN_VALUE_DIGEST, "\n");
+    // print("action contains activation for protocol feature ACTION_RETURN_VALUE (block ", block_num ,")\n");
 
     cid_index.modify( chain_itr, get_self(), [&]( auto &c ) {
       c.return_value_activated = block_num;
@@ -687,7 +685,7 @@ void bridge::checkactionproof( checksum256 chain_id,
 
   if ( chain_itr->return_value_activated > 0 &&
        block_num > chain_itr->return_value_activated ) {
-    //print("using POST-ACTION_RETURN_VALUE activation hashing function\n");
+    // print("using POST-ACTION_RETURN_VALUE activation hashing function\n");
     r_action ra = { actionproof.action.account,
                     actionproof.action.name,
                     actionproof.action.authorization,
@@ -695,7 +693,7 @@ void bridge::checkactionproof( checksum256 chain_id,
 
     actionDigest = generate_action_digest( ra, actionproof.returnvalue );
   } else {
-    //print("using PRE-ACTION_RETURN_VALUE activation hashing function\n");
+    // print("using PRE-ACTION_RETURN_VALUE activation hashing function\n");
     std::vector< char > serializedAction = pack( actionproof.action );
     actionDigest = sha256( serializedAction.data(), serializedAction.size() );
   }
@@ -709,7 +707,7 @@ void bridge::checkactionproof( checksum256 chain_id,
 
   check( actionproof.amproofpath.size() > 0, "must provide action proof path" );
 
-  //print("receiptDigest ", receiptDigest, "\n");
+  // print("receiptDigest ", receiptDigest, "\n");
 
   if ( actionproof.amproofpath.size() == 1 &&
        actionproof.amproofpath[0] == receiptDigest ) {
@@ -745,10 +743,10 @@ void bridge::checkblockproof( heavyproof blockproof ) {
   bool new_schedule_format = sched_itr->producer_schedule_v1.version == 0;
   producer_schedule  producer_schedule_v1 = sched_itr->producer_schedule_v1;
   bridge::schedulev2 producer_schedule_v2 = sched_itr->producer_schedule_v2;
-  checksum256 producer_schedule_hash = sched_itr->hash;
+  checksum256        producer_schedule_hash = sched_itr->hash;
   uint32_t block_num = blockproof.blocktoprove.block.header.block_num();
   uint32_t previous_block_num = block_num;
-  bool schedule_hash_updated = false;
+  bool     schedule_hash_updated = false;
 
   // if current block_num is greater than the schedule's last block, get next schedule hash
   if ( block_num > sched_itr->last_block && !schedule_hash_updated ) {
@@ -773,7 +771,7 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
   // Prove block authenticity
   // must be active nodes prior to appending previous block's id
-  uint64_t node_count = blockproof.blocktoprove.node_count;
+  uint64_t                   node_count = blockproof.blocktoprove.node_count;
   std::vector< checksum256 > hashes = blockproof.hashes;
   std::vector< uint16_t >    an = blockproof.blocktoprove.active_nodes;
   std::vector< checksum256 > active = map_hashes( hashes, an );
@@ -871,8 +869,6 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
       // bool new_schedule_format = sched_itr->producer_schedule_v1.version == 0;
 
-      // print("new_schedule_format : ", new_schedule_format, "\n");
-
       producer_schedule_v1 = sched_itr->producer_schedule_v1;
       producer_schedule_v2 = sched_itr->producer_schedule_v2;
     }
@@ -896,17 +892,17 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
     if ( round1_bft_producers.size() == threshold_for_finality ) {
       // accumulating for second round
-
-      if ( round2_bft_producers.size() == 0 )
+      if ( round2_bft_producers.size() == 0 ) {
         check( *round1_bft_producers.rbegin() !=
                    blockproof.bftproof[i].header.producer,
                "producer duplicated in bft proofs: " +
                    blockproof.bftproof[i].header.producer.to_string() );
-      else
+      } else {
         check( round2_bft_producers.count(
                    blockproof.bftproof[i].header.producer ) == 0,
                "producer duplicated in bft proofs: " +
                    blockproof.bftproof[i].header.producer.to_string() );
+      }
 
       round2_bft_producers.emplace( blockproof.bftproof[i].header.producer );
 
@@ -920,7 +916,6 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
     } else {
       // accumulating for first round
-
       check( round1_bft_producers.count(
                  blockproof.bftproof[i].header.producer ) == 0,
              "producer duplicated in bft proofs: " +
@@ -936,10 +931,8 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
   // if block header contains a new schedule using old new_producers format, add it to schedules for chain
   if ( blockproof.blocktoprove.block.header.new_producers.has_value() ) {
-
     producer_schedule new_producer_schedule =
         *blockproof.blocktoprove.block.header.new_producers;
-
     std::vector< char > serializedSchedule = pack( new_producer_schedule );
 
     auto schedule_hash =
@@ -957,7 +950,7 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
     if ( sched_itr == _schedulestable.end() ) {
       time_point cts = current_time_point();
-      uint64_t expiry = cts.sec_since_epoch() + SCHEDULE_CACHING_DURATION;
+      uint64_t   expiry = cts.sec_since_epoch() + SCHEDULE_CACHING_DURATION;
 
       _schedulestable.emplace( get_self(), [&]( auto &c ) {
         c.version = new_producer_schedule.version;
@@ -1000,7 +993,7 @@ void bridge::checkblockproof( heavyproof blockproof ) {
         // add it to schedules table if not already present
         if ( sched_itr == _schedulestable.end() ) {
           time_point cts = current_time_point();
-          uint64_t expiry = cts.sec_since_epoch() + SCHEDULE_CACHING_DURATION;
+          uint64_t   expiry = cts.sec_since_epoch() + SCHEDULE_CACHING_DURATION;
 
           _schedulestable.emplace( get_self(), [&]( auto &c ) {
             c.version = new_producer_schedule.version;
@@ -1046,7 +1039,7 @@ bridge::heavyproof bridge::get_heavy_proof( name contract ) {
   return p.hp;
 }
 
-//verify a heavy block proof
+// verify a heavy block proof
 void bridge::_checkproofa( heavyproof blockproof ) {
 
   // validate the heavy proof in 3 mains phases
@@ -1061,7 +1054,7 @@ void bridge::_checkproofa( heavyproof blockproof ) {
   gc_schedules( chain_itr->name, 2 );
 }
 
-//verify a heavy block proof and action proof
+// verify a heavy block proof and action proof
 void bridge::_checkproofb( heavyproof blockproof, actionproof actionproof ) {
 
   checkblockproof( blockproof );
@@ -1078,10 +1071,9 @@ void bridge::_checkproofb( heavyproof blockproof, actionproof actionproof ) {
   gc_schedules( chain_itr->name, 2 );
 }
 
-//verify a light block proof and action proof
+// verify a light block proof and action proof
 void bridge::_checkproofc( lightproof blockproof, actionproof actionproof ) {
-
-  //print("verifying proof...\n");
+  // print("verifying proof...\n");
 
   auto cid_index = _chainstable.get_index< "chainid"_n >();
   auto chain_itr = cid_index.find( blockproof.chain_id );
@@ -1109,10 +1101,6 @@ void bridge::_checkproofc( lightproof blockproof, actionproof actionproof ) {
 ACTION bridge::checkproofa( name contract ) {
   heavyproof blockproof = get_heavy_proof( contract );
 
-  // _checkproofa calls:
-  // (1) checkblockproof(blockproof);
-  // (2) gc_proofs(chain_itr->name, 2);
-  // (3) gc_schedules(chain_itr->name, 2);
   _checkproofa( blockproof );
 }
 
