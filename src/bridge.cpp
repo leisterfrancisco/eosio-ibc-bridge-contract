@@ -191,7 +191,6 @@ void check_signatures( name                     producer,
                        checksum256              previous_bmroot,
                        bridge::schedulev2       producer_schedule,
                        checksum256              producer_schedule_hash ) {
-
   checksum256 header_bmroot =
       hash_pair( std::make_pair( header_digest, previous_bmroot ) );
   checksum256 digest_to_sign =
@@ -200,6 +199,7 @@ void check_signatures( name                     producer,
   block_signing_authority_v0 auth =
       get_producer_authority( producer_schedule, producer );
   std::vector< public_key > signing_keys;
+  
   for ( const auto &sig : producer_signatures ) {
     signing_keys.push_back( recover_key( digest_to_sign, sig ) );
   }
@@ -208,7 +208,6 @@ void check_signatures( name                     producer,
 }
 
 public_key get_producer_key( producer_schedule schedule, name producer ) {
-
   for ( int i = 0; i < schedule.producers.size(); i++ ) {
 
     if ( schedule.producers[i].producer_name == producer ) {
@@ -523,7 +522,6 @@ void bridge::check_proven_root( name chain, checksum256 root ) {
 
 // returns the chain name
 name bridge::get_chain_name( checksum256 chain_id ) {
-
   auto cid_index = _chainstable.get_index< "chainid"_n >();
   auto chain_itr = cid_index.find( chain_id );
 
@@ -852,7 +850,6 @@ void bridge::checkblockproof( heavyproof blockproof ) {
     // if current block_num is greater than the schedule's last block, get next schedule hash
     if ( block_num > sched_itr->last_block && !schedule_hash_updated ) {
       // print("Schedule no longer in force. Checking for new pending schedule hash...\n");
-
       if ( new_schedule_format )
         producer_schedule_hash = get_next_schedule_hash(
             chain_itr->name,
@@ -867,7 +864,6 @@ void bridge::checkblockproof( heavyproof blockproof ) {
 
     if ( blockproof.bftproof[i].header.schedule_version ==
          sched_itr->version + 1 ) {
-
       sched_itr = _schedulestable.find(
           blockproof.bftproof[i].header.schedule_version );
 
