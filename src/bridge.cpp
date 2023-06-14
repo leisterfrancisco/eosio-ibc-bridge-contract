@@ -1146,7 +1146,7 @@ ACTION bridge::disable( name chain_name ) {
   } );
 }
 
-//Enable contract
+// Enable contract
 ACTION bridge::enable( name chain_name ) {
 
   require_auth( _self );

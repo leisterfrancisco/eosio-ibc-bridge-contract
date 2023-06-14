@@ -148,7 +148,7 @@ public:
   typedef std::vector< checksum256 >
       checksum256_list; // required because nested vectors not support in legacy CDTs
 
-  //heavy block proof
+  // heavy block proof
   TABLE heavyproof {
     checksum256                 chain_id;
     std::vector< checksum256 >  hashes;
@@ -158,7 +158,7 @@ public:
     EOSLIB_SERIALIZE( heavyproof, (chain_id)(hashes)(blocktoprove)( bftproof ) )
   };
 
-  //light block proof
+  // light block proof
   TABLE lightproof {
     checksum256                chain_id;
     blockheader                header;
@@ -168,7 +168,7 @@ public:
     EOSLIB_SERIALIZE( lightproof, (chain_id)(header)(root)( bmproofpath ) )
   };
 
-  //action proof
+  // action proof
   TABLE actionproof {
     action                     action;
     actreceipt                 receipt;
