@@ -134,6 +134,9 @@ bool proof_of_inclusion( std::vector< checksum256 > proof_nodes,
     std::array< uint8_t, 32 > arr = node.extract_as_byte_array();
     bool                      isLeft = arr[0] < 128;
 
+    // QUESTION: if you are turning the first bit off/on, would it affect the hash?
+    // why is it not by default turned on/off?
+
     if ( !isLeft ) {
       node = make_canonical_right( node );
       hash = make_canonical_left( hash );
@@ -344,7 +347,6 @@ checksum256 check_block_header( bridge::sblockheader        block,
 
 checksum256 generate_action_digest( const bridge::r_action    &act,
                                     const std::vector< char > &returnvalue ) {
-
   checksum256 hashes[2];
 
   const bridge::r_action_base *base = &act;
@@ -361,7 +363,6 @@ checksum256 generate_action_digest( const bridge::r_action    &act,
   hashes[0] = sha256( serialized_base.data(), serialized_base.size() );
 
   {
-
     std::vector< uint8_t > data_digest( action_input_size );
     std::vector< uint8_t > output_digest( return_value_size );
 
